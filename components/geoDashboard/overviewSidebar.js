@@ -35,14 +35,14 @@ export default function OverviewSidebar() {
             <nav className="flex-1">
                 <ul className="space-y-1">
                 <li>
-                    <Link href="/geo/overview" className={linkClasses("/geo/industry/overview")}>
+                    <Link href="/geo/industry/overview" className={linkClasses("/geo/industry/overview")}>
                     <LayoutDashboard className="h-5 w-5 mr-3" />
                     <span>Overview</span>
                     </Link>
                 </li>
-                
+
                 <li>
-                    <Link href="/geo/pages" className={linkClasses("/geo/industry/pages")}>
+                    <Link href="/geo/industry/pages" className={linkClasses("/geo/industry/pages")}>
                     <Folder className="h-5 w-5 mr-3" />
                     <span>Pages</span>
                     </Link>
@@ -60,31 +60,31 @@ export default function OverviewSidebar() {
                     </Link>
                 </li>
                 <li>
-                    <Link href="/geo/referrals" className={linkClasses("/geo/industry/referrals")}>
+                    <Link href="/geo/industry/referrals" className={linkClasses("/geo/industry/referrals")}>
                     <Share2 className="h-5 w-5 mr-3" />
                     <span>Referrals</span>
                     </Link>
                 </li>
                 <li>
-                    <Link href="/geo/technical" className={linkClasses("/geo/industry/technical")}>
+                    <Link href="/geo/industry/technical" className={linkClasses("/geo/industry/technical")}>
                     <PieChart className="h-5 w-5 mr-3" />
                     <span>Technical Analysis</span>
                     </Link>
                 </li>
                 <li>
-                    <Link href="/geo/optimization" className={linkClasses("/geo/industry/optimization")}>
+                    <Link href="/geo/industry/optimization" className={linkClasses("/geo/industry/optimization")}>
                     <Wrench className="h-5 w-5 mr-3" />
                     <span>Robots Optimization</span>
                     </Link>
                 </li>
                 <li>
-                    <Link href="/geo/apiKeys" className={linkClasses("/geo/industry/apiKeys")}>
+                    <Link href="/geo/industry/apiKeys" className={linkClasses("/geo/industry/apiKeys")}>
                     <Key className="h-5 w-5 mr-3" />
                     <span>API Keys</span>
                     </Link>
                 </li>
                 <li>
-                    <Link href="/geo/settings" className={linkClasses("/geo/industry/settings")}>
+                    <Link href="/geo/industry/settings" className={linkClasses("/geo/industry/settings")}>
                     <Settings className="h-5 w-5 mr-3" />
                     <span>Settings</span>
                     </Link>
