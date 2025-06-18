@@ -40,6 +40,7 @@ export default function OverviewSidebar() {
                     <span>Overview</span>
                     </Link>
                 </li>
+                
                 <li>
                     <Link href="/geo/pages" className={linkClasses("/geo/industry/pages")}>
                     <Folder className="h-5 w-5 mr-3" />
