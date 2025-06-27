@@ -1,11 +1,39 @@
 "use client"
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import logoIcon from "../../public/assets/logo/logo icon svg.svg";
 import Footer from "../../components/footer/Footer";
 
 export default function IntroPage () {
     const router = useRouter();
+    const emailID = localStorage.getItem("emailID");
+
+    const [url, setUrl] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [password, setPassword] = useState("");
+    const [isFormValid, setIsFormValid] = useState(false);
+
+    useEffect(() => {
+        const isValidUrl = (() => {
+            try {
+                const u = new URL(url);
+                return u.protocol === "http:" || u.protocol === "https:";
+            } catch (_) {
+                return false;
+            }
+        })();
+    
+        const valid = emailID && firstName && lastName && password.length >= 8 && isValidUrl;
+        setIsFormValid(valid);
+    }, [emailID, firstName, lastName, password, url]);
+
+    const handleContinue = () => {
+        localStorage.setItem("companyURL", url);
+        router.push("/geo/companyAnalysis");
+    };
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen items-start">
             <div className="relative h-full px-10">
@@ -54,7 +82,8 @@ export default function IntroPage () {
                                                         spellCheck="false"
                                                         type="email"
                                                         name="email"
-                                                        value="adnan@grocliq.com"
+                                                        value={ emailID }
+                                                        readOnly
                                                     />      
                                                 </div>
                                             </div>
@@ -74,6 +103,8 @@ export default function IntroPage () {
                                                             spellCheck="false"
                                                             type="text"
                                                             name="firstName"
+                                                            value={firstName}
+                                                            onChange={(e) => setFirstName(e.target.value)}
                                                         />
                                                     </div>
                                                 </div>
@@ -86,12 +117,14 @@ export default function IntroPage () {
                                                             className="w-full h-full bg-bg-primary px-4 py-2 transition-all duration-300 ease-out border-[1.5px] border-border-primary rounded-lg outline-none placeholder:select-none placeholder:font-normal text-body-small-medium placeholder:text-text-tertiary shadow-flat focus:shadow-focus focus:border-border-focus not-focus-visible:hover:bg-control-hover"
                                                             required
                                                             placeholder="Last name"
-                                                            id="flast-name"
+                                                            id="last-name"
                                                             autoComplete="on"
                                                             autoCorrect="off"
                                                             spellCheck="false"
                                                             type="text"
                                                             name="lastName"
+                                                            value={lastName}
+                                                            onChange={(e) => setLastName(e.target.value)}
                                                         />
                                                     </div>
                                                 </div>
@@ -105,22 +138,44 @@ export default function IntroPage () {
                                                         className="w-full h-full bg-bg-primary px-4 py-2 transition-all duration-300 ease-out border-[1.5px] border-border-primary rounded-lg outline-none placeholder:select-none placeholder:font-normal text-body-small-medium placeholder:text-text-tertiary shadow-flat focus:shadow-focus focus:border-border-focus not-focus-visible:hover:bg-control-hover"
                                                         required
                                                         placeholder="Password"
-                                                        id="flast-name"
+                                                        id="password"
                                                         autoComplete="on"
                                                         autoCorrect="off"
                                                         spellCheck="false"
-                                                        type="text"
+                                                        type="password"
                                                         name="password"
+                                                        value={password}
+                                                        onChange={(e) => setPassword(e.target.value)}
                                                     />
                                                 </div>
                                                 <span className="text-[13px] text-[#969696]">
                                                     Password must be at least 8 characters
                                                 </span>
                                             </div>
-
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex justify-between gap-2">
+                                                    <p className="text-[13px] text-[#18181A]">Company Website URL</p>
+                                                </div>
+                                                <div className="relative h-full w-full">
+                                                    <input
+                                                        className="w-full h-full bg-bg-primary px-4 py-2 transition-all duration-300 ease-out border-[1.5px] border-border-primary rounded-lg outline-none placeholder:select-none placeholder:font-normal text-body-small-medium placeholder:text-text-tertiary shadow-flat focus:shadow-focus focus:border-border-focus not-focus-visible:hover:bg-control-hover"
+                                                        required
+                                                        placeholder="https://example.com"
+                                                        id="website-url"
+                                                        autoComplete="on"
+                                                        autoCorrect="off"
+                                                        spellCheck="false"
+                                                        type="url"
+                                                        name="url"
+                                                        value={url}
+                                                        onChange={(e) => setUrl(e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
                                             <button
                                                 type="button"
-                                                onClick={() => router.push("/geo/dashboard")}
+                                                disabled={!isFormValid}
+                                                onClick={handleContinue}
                                                 className={`
                                                     mx-auto mt-4 w-full overflow-hidden transition-[scale,background-color]
                                                     duration-300 ease-out gap-2 relative outline-none shadow 
@@ -128,7 +183,7 @@ export default function IntroPage () {
                                                     min-h-[36px] text-[13px] bg-[#1E1E1E] hover:bg-[#2A2A2A] text-white 
                                                     disabled:cursor-not-allowed disabled:text-[#9A9A9A] disabled:bg-[#EDEDED] px-2.5
                                                 `}
-                                                >
+                                            >
                                                 <div className="flex items-center justify-center transition-opacity duration-200 ease-out">
                                                     Create Account
                                                 </div>
