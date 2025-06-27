@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import {  useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Footer from "../../components/footer/Footer";
@@ -9,11 +9,26 @@ import logoIcon from "../../public/assets/logo/logo icon svg.svg";
 
 export default function GeoPage() {
     const [email, setEmail] = useState("");
+    const [touched, setTouched] = useState(false);
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    const publicDomains = [
+        "gmail.com","gmail.co", "yahoo.com", "outlook.com", "hotmail.com", "aol.com", "icloud.com",
+        "protonmail.com", "zoho.com", "yandex.com", "mail.com", "gmx.com"
+    ];
+
+    const domain = email.split("@")[1] || "";
+    const isPublicDomain = publicDomains.includes(domain.toLocaleLowerCase());
+    const isCompanyEmail = isValidEmail && !isPublicDomain;
+
     const router = useRouter();
 
     const handleContinue = () => {
         if(isValidEmail) {
+            const domain = email.split('@')[1];
+            const company = domain.split('.')[0];
+            localStorage.setItem("company", company);
+            localStorage.setItem("emailID", email);
             router.push("/geo/welcome");
         }
     };
@@ -26,7 +41,7 @@ export default function GeoPage() {
                         <div className="flex flex-col gap-10">
                             <h1 className="text-2xl font-bold">
                                 <Link
-                                href="/dashboard"
+                                href="/geo/page"
                                 className="flex items-center gap-1 text-[12px] text-gray-500 hover:text-black transition-colors"
                                 >
                                 <span className="text-base font-light">&lt;</span>
@@ -63,16 +78,19 @@ export default function GeoPage() {
                                         id="email"
                                         name="email"
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={(e) => {
+                                            setEmail(e.target.value);
+                                            setTouched(true);
+                                        }}
                                         placeholder="name@company.com"
                                         className={`transition-all duration-300 ease-out bg-white border border-gray-300 rounded-md outline-none px-4 py-2 shadow-none focus:shadow-md text-sm font-normal placeholder:font-extralight placeholder:text-gray-400 ${
-                                            isValidEmail ? "w-[63%]" : "w-full"
+                                            isCompanyEmail ? "w-[63%]" : "w-full"
                                         }`}
                                     />
                                     <button
                                         type="submit"
                                         onClick={handleContinue}
-                                        disabled={!isValidEmail}
+                                        disabled={!isCompanyEmail}
                                         className={`transition-all duration-300 ease-out bg-black text-white px-4 py-2 rounded-md text-sm font-medium shadow ${
                                             isValidEmail
                                                 ? "opacity-100 translate-x-0 pointer-events-auto"
@@ -82,6 +100,11 @@ export default function GeoPage() {
                                         Continue
                                     </button>
                                 </div>
+                                {touched && isValidEmail && isPublicDomain && (
+                                    <p className="text-sm text-red-500 font-light mt-1">
+                                        Personal emails are not allowed.
+                                    </p>
+                                )}
                             </div>
                         </div>
                         <div className="bg-white rounded-xl shadow-md p-4 mt-10">
